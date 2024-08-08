@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <meta name="_csrf" content="${_csrf.token}" />
+    <title>Ecommerce</title>
+  </head>
+
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <a href="#" class="logo">
+        <i class="bx bx-code-alt"></i>
+        <div class="logo-name"><span>Distri</span>Grup</div>
+      </a>
+      <ul class="side-menu">
+        <li>
+          <a href="#"><i class="bx bxs-dashboard"></i>Inicio</a>
+        </li>
+        <li>
+          <a href="#"><i class="bx bx-store-alt"></i>Ventas y ordenes</a>
+        </li>
+        <li class="active">
+          <a href="#"><i class="bx bx-analyse"></i>Gestion de productos</a>
+        </li>
+        <li>
+          <a href="#"
+            ><i class="bx bx-message-square-dots"></i>Servicio de correo</a
+          >
+        </li>
+        <li>
+          <a href="#"><i class="bx bx-group"></i>Clientes</a>
+        </li>
+      </ul>
+      <ul class="side-menu">
+        <li>
+          <a href="#" class="logout">
+            <i class="bx bx-log-out-circle"></i>
+            Cerrar sesion
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- End of Sidebar -->
+
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Navbar -->
+      <nav>
+        <i class="bx bx-menu"></i>
+        <form action="#">
+          <div class="form-input">
+            <input type="search" placeholder="Search..." />
+            <button class="search-btn" type="submit">
+              <i class="bx bx-search"></i>
+            </button>
+          </div>
+        </form>
+        <input type="checkbox" id="theme-toggle" hidden />
+        <label for="theme-toggle" class="theme-toggle"></label>
+        <a href="#" class="notif">
+          <i class="bx bx-bell"></i>
+          <span class="count">12</span>
+        </a>
+        <a href="#" class="profile">
+          <img src="images/logo.png" />
+        </a>
+      </nav>
+      <!-- End of Navbar -->
+
+      <main>
+        <div class="bottom-data">
+          <div class="orders">
+            <div class="header">
+              <i class="bx bx-receipt"></i>
+              <h3>Lista de productos</h3>
+              <i class="bx bx-filter"></i>
+              <i class="bx bx-search"></i>
+            </div>
+            <button class="add-btn" onclick="openModal()">
+              <svg
+                class="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Agregar
+            </button>
+            <table>
+              <thead>
+                <tr>
+                  <th>Codigo</th>
+                  <th>Nombre</th>
+                  <th>Cantidad</th>
+                  <th>Talla</th>
+                  <th>Precio</th>
+                  <th>Estado</th>
+                  <th>Accion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="lista : ${shirtsPage.content}">
+                  <td th:text="${lista.id}"></td>
+                  <td th:text="${lista.name}"></td>
+                  <td th:text="${lista.quantity}"></td>
+                  <td th:text="${lista.sizes}"></td>
+                  <td
+                    th:text="${#numbers.formatDecimal(lista.price, 1, 'POINT', 2, 'COMMA')}"
+                  ></td>
+                  <td th:text="${lista.state}">
+                    <span class="status completed"></span>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      class="edit-btn"
+                      th:onclick="'openEditModal(' + ${lista.id} + ')'"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      type="button"
+                      class="delete-btn"
+                      th:onclick="'confirmDelete(' + ${lista.id} + ')'"
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <!-- Botón Anterior -->
+                <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
+                  <a
+                    th:href="@{/admin/shirt(page=${currentPage - 1}, size=${shirtsPage.size})}"
+                    class="page-link flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    th:if="${currentPage > 0}"
+                  >
+                    <span class="sr-only">Anterior</span>
+                  </a>
+                </li>
+                <!-- Números de página -->
+                <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+                  <a
+                    th:href="@{/admin/shirt(page=${i}, size=${shirtsPage.size})}"
+                    th:text="${i + 1}"
+                    class="page-link flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  ></a>
+                </li>
+                <!-- Botón Siguiente -->
+                <li th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''" class="page-item">
+                  <a
+                    th:href="@{/admin/shirt(page=${currentPage + 1}, size=${shirtsPage.size})}"
+                    class="page-link flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    th:unless="${currentPage == totalPages - 1}"
+                  >
+                    <span class="sr-only">Siguiente</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            
+            
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="crud-modal" class="modal">
+      <div class="modal-content">
+        <!-- Modal header -->
+        <div class="modal-header">
+          <h3>Formulario productos</h3>
+          <button type="button" class="close-btn" onclick="closeModal()">
+            ×
+          </button>
+        </div>
+        <!-- Modal body -->
+        <form action="/admin/shirt/add" method="post" enctype="multipart/form-data" class="modal-body" th:object="${shirt}">
+          <!-- CSRF Token -->
+          <input type="hidden" name="_csrf.parameterName" value="_csrf.token" />
+      
+          <div class="form-group">
+              <label for="name">Nombre</label>
+              <input type="text" name="name" id="name" placeholder="Nombre del producto" required th:field="*{name}" />
+          </div>
+          <div class="form-group">
+              <label for="description">Descripción</label>
+              <textarea name="description" id="description" placeholder="Descripcion del producto" required th:field="*{description}"></textarea>
+          </div>
+          <div class="form-group">
+              <label for="price">Precio</label>
+              <input type="number" name="price" id="price" placeholder="$2999" required th:field="*{price}" />
+          </div>
+          <div class="form-group">
+              <label for="quantity">Cantidad</label>
+              <input type="number" name="quantity" id="quantity" placeholder="Cantidad" required th:field="*{quantity}" />
+          </div>
+          <div class="form-group">
+              <label for="category">Categoría</label>
+              <select name="category" id="category" required th:field="*{category}">
+                  <option value="">Seleccionar categoria</option>
+                  <option value="Hombre">Hombre</option>
+                  <option value="Mujer">Mujer</option>
+              </select>
+          </div>
+          <div class="form-group">
+              <label for="sizes">Tallas</label>
+              <select name="sizes" id="sizes" multiple required th:field="*{sizes}">
+                  <option value="XS">XS</option>
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+              </select>
+          </div>
+          <div class="form-group">
+              <label for="colors">Colores</label>
+              <input type="text" name="colors" id="colors" placeholder="Colores" required th:field="*{colors}" />
+              <div class="help-text">Ingresa los colores separados por -</div>
+          </div>
+          <div class="form-group">
+              <label for="files">Imágenes</label>
+              <input type="file" name="files" id="files" multiple />
+          </div>
+          <button type="submit" class="submit-btn">Registrar</button>
+      </form>
+      
+      </div>
+    </div>
+
+    <script src="/js/index.js"></script>
+  </body>
+</html>

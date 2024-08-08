@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DistriGruop</title>
+
+    <!-- 
+    - favicon
+  -->
+    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml" />
+
+    <!-- 
+    - custom css link
+  -->
+    <link rel="stylesheet" href="/css/categoryMen.css" />
+
+    <!-- 
+    - google font link
+  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- 
+    - preload banner
+  -->
+    <link rel="preload" href="./assets/images/hero-banner.png" as="image" />
+  </head>
+
+  <body id="top">
+    <!-- 
+    - #HEADER
+  -->
+
+  <header class="header" data-header>
+    <div class="container">
+      <div class="overlay" data-overlay></div>
+
+      <a href="#" class="logo-text"> Distri<span>Group</span> </a>
+
+      <button class="nav-open-btn" data-nav-open-btn aria-label="Open Menu">
+        <ion-icon name="menu-outline"></ion-icon>
+      </button>
+
+      <nav class="navbar" data-navbar>
+        <button
+          class="nav-close-btn"
+          data-nav-close-btn
+          aria-label="Close Menu"
+        >
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+
+        <ul class="navbar-list">
+          <li class="navbar-item">
+            <a href="/" class="navbar-link" >Inicio</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="/women" class="navbar-link">Mujeres</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="/men" class="navbar-link">Hombres</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="/offers" class="navbar-link">Ofertas</a>
+          </li>
+        </ul>
+
+        <ul class="nav-action-list">
+          <li>
+            <button class="nav-action-btn">
+              <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+              <span class="nav-action-text">Buscar</span>
+            </button>
+          </li>
+
+          <li>
+            <a href="#" class="nav-action-btn">
+              <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+              <span class="nav-action-text">Iniciar sesión</span>
+            </a>
+          </li>
+
+          <li>
+            <button class="nav-action-btn">
+              <ion-icon name="bag-outline" aria-hidden="true"></ion-icon>
+              <data class="nav-action-text" value="318.00"
+                >Basket: <strong>$318.00</strong></data
+              >
+              <data class="nav-action-badge" value="4" aria-hidden="true"
+                >4</data
+              >
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <main>
+      <article>
+          <section class="section hero" style="background-image: url('./assets/images/BannerRopa.jpg')">
+            <div class="container">
+    
+              <h2 class="h1 hero-title">
+                Nuevos diseños
+              </h2>
+    
+              <p class="hero-text">
+                ¡Atención, comerciantes de moda! 🔥 En DistriGroup estamos emocionados de anunciar descuentos exclusivos en nuestra nueva colección de ropa al por mayor. Encuentra las últimas tendencias y aumenta tus ventas con nuestros precios especiales por tiempo limitado.
+              </p>
+    
+              <button class="btn btn-primary">
+                <span>Comprar ahora</span>
+    
+                <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+              </button>
+    
+            </div>
+          </section>
+
+          <section class="section product">
+            <div class="container">
+              <h2 class="h2 section-title">Categoria Hombres</h2>
+  
+              <ul class="product-list2">
+                <li class="product-item2" th:each="lista : ${shirtsPage}" >
+                  <div class="product-card2" tabindex="0">
+                    <figure class="card-banner2">
+                      <img
+                      th:src="@{${lista.image1}}"
+                        width="312"
+                        height="350"
+                        loading="lazy"
+                        alt="Running Sneaker Shoes"
+                        class="image-contain"
+  
+                      />
+  
+                      <div class="card-badge2" th:text="${lista.state}">New</div>
+  
+                      <ul class="card-action-list2">
+                        <li class="card-action-item2">
+                          
+  
+                        </li>
+  
+  
+                        
+                      
+                      </ul>
+                    </figure>
+  
+                    <div class="card-content">
+                      <div class="card-cat">
+                        <a href="#" class="card-cat-link">Categoria</a> /
+                        <a href="#" class="card-cat-link" th:text="${lista.category}">Women</a>
+                      </div>
+  
+                      <h3 class="h3 card-title">
+                        <a href="#" th:text="${lista.name}" th:href="@{'/shirt/' + ${lista.id}}">Running Sneaker Shoes</a>
+                      </h3>
+  
+                      <data class="card-price" th:text="${#numbers.formatInteger(lista.price,3,'POINT')}"></data>
+
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <nav aria-label="Page navigation example">
+                  <ul class="pagination">
+                    <!-- Botón Anterior -->
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
+                      <a
+                        th:href="@{/women(page=${currentPage - 1}, size=${size})}"
+                        class="page-link flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        th:if="${currentPage > 0}"
+                      >
+                        <span class="sr-only">Anterior</span>
+                      </a>
+                    </li>
+                
+                    <!-- Números de página -->
+                    <li th:each="i : ${#numbers.sequence(0, shirtsPage.totalPages - 1)}" class="page-item">
+                      <a
+                        th:href="@{/women(page=${i}, size=${size})}"
+                        th:text="${i + 1}"
+                        th:classappend="${i == currentPage} ? 'active' : ''"
+                        class="page-link flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                      ></a>
+                    </li>
+                
+                    <!-- Botón Siguiente -->
+                    <li class="page-item" th:classappend="${currentPage == shirtsPage.totalPages - 1} ? 'disabled' : ''">
+                      <a
+                        th:href="@{/women(page=${currentPage + 1}, size=${size})}"
+                        class="page-link flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        th:if="${currentPage < shirtsPage.totalPages - 1}"
+                      >
+                        <span class="sr-only">Siguiente</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+                
+                
+            </div>
+          </section>
+      </article>
+    </main>
+
+    <!-- 
+    - #FOOTER
+  -->
+
+    <footer class="footer">
+      <div class="footer-top section">
+        <div class="container">
+          <div class="footer-brand">
+            <a href="#" class="logo-text"> Distri<span>Group</span> </a>
+
+            <ul class="social-list">
+              <li>
+                <a href="#" class="social-link">
+                  <ion-icon name="logo-facebook"></ion-icon>
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="social-link">
+                  <ion-icon name="logo-twitter"></ion-icon>
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="social-link">
+                  <ion-icon name="logo-pinterest"></ion-icon>
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="social-link">
+                  <ion-icon name="logo-linkedin"></ion-icon>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-link-box">
+            <ul class="footer-list">
+              <li>
+                <p class="footer-list-title">Contacto</p>
+              </li>
+
+              <li>
+                <address class="footer-link">
+                  <ion-icon name="location"></ion-icon>
+
+                  <span class="footer-link-text">
+                    Calle 55a 39-29 Cali, Colombia
+                  </span>
+                </address>
+              </li>
+
+              <li>
+                <a href="tel:+557343673257" class="footer-link">
+                  <ion-icon name="call"></ion-icon>
+
+                  <span class="footer-link-text">+57 315-324-6835</span>
+                </a>
+              </li>
+
+              <li>
+                <a href="mailto:footcap@help.com" class="footer-link">
+                  <ion-icon name="mail"></ion-icon>
+
+                  <span class="footer-link-text">DistriGruop@gmail.com</span>
+                </a>
+              </li>
+            </ul>
+
+            <div class="footer-list">
+              <p class="footer-list-title">Horario de atencion</p>
+
+              <table class="footer-table">
+                <tbody>
+                  <tr class="table-row">
+                    <th class="table-head" scope="row">Lunes a viernes:</th>
+
+                    <td class="table-data">8:00 AM - 5:30 PM</td>
+                  </tr>
+
+                  <tr class="table-row">
+                    <th class="table-head" scope="row">Sabados:</th>
+
+                    <td class="table-data">7:00 AM - 2:00 PM</td>
+                  </tr>
+
+                  <tr class="table-row">
+                    <th class="table-head" scope="row">Domingo:</th>
+
+                    <td class="table-data">Cerrado</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- 
+    - #GO TO TOP
+  -->
+
+    <a href="#top" class="go-top-btn" data-go-top>
+      <ion-icon name="arrow-up-outline"></ion-icon>
+    </a>
+
+    <!-- 
+    - custom js link
+  -->
+    <script src="/js/script2.js"></script>
+
+    <!-- 
+    - ionicon link
+  -->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>

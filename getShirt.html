@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DistriGruop</title>
+
+    <!-- 
+    - favicon
+  -->
+    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml" />
+
+    <!-- 
+    - custom css link
+  -->
+    <link rel="stylesheet" href="/css/style2.css" />
+
+    <!-- 
+    - google font link
+  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- 
+    - preload banner
+  -->
+    <link rel="preload" href="./assets/images/hero-banner.png" as="image" />
+  </head>
+
+  <body id="top">
+    <!-- 
+      - #HEADER
+    -->
+
+    <header class="header" data-header>
+      <div class="container">
+        <div class="overlay" data-overlay></div>
+
+        <a href="#" class="logo-text"> Distri<span>Group</span> </a>
+
+        <button class="nav-open-btn" data-nav-open-btn aria-label="Open Menu">
+          <ion-icon name="menu-outline"></ion-icon>
+        </button>
+
+        <nav class="navbar" data-navbar>
+          <button
+            class="nav-close-btn"
+            data-nav-close-btn
+            aria-label="Close Menu"
+          >
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+
+          <ul class="navbar-list">
+            <li class="navbar-item">
+              <a href="/" class="navbar-link">Inicio</a>
+            </li>
+
+            <li class="navbar-item">
+              <a href="/women" class="navbar-link">Mujeres</a>
+            </li>
+
+            <li class="navbar-item">
+              <a href="/men" class="navbar-link">Hombres</a>
+            </li>
+
+            <li class="navbar-item">
+              <a href="/offers" class="navbar-link">Ofertas</a>
+            </li>
+          </ul>
+
+          <ul class="nav-action-list">
+            <li>
+              <button class="nav-action-btn">
+                <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                <span class="nav-action-text">Buscar</span>
+              </button>
+            </li>
+
+            <li>
+              <a href="#" class="nav-action-btn">
+                <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+                <span class="nav-action-text">Iniciar sesión</span>
+              </a>
+            </li>
+
+            <li>
+              <button class="nav-action-btn">
+                <ion-icon name="bag-outline" aria-hidden="true"></ion-icon>
+                <data class="nav-action-text" value="318.00"
+                  >Basket: <strong>$318.00</strong></data
+                >
+                <data class="nav-action-badge" value="4" aria-hidden="true"
+                  >4</data
+                >
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <article>
+        <div class="containerS" th:object="${shirt}">
+          <div class="gallery">
+            <div th:if="${images.size() > 0}" class="main-image">
+              <img
+                th:src="@{${images[__${images.size() - 1}__]}}"
+                alt="Producto"
+                id="currentImage"
+              />
+            </div>
+            <div class="thumbnail-images">
+              <div th:each="image : ${images}">
+                <img
+                  th:src="@{${image}}"
+                  alt="Producto"
+                  onclick="changeImage(this)"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="product-details">
+            <h1 th:text="${shirt.name}">Nombre del Producto</h1>
+            <p class="description" th:text="${shirt.description}">
+              Descripción detallada del producto. Este producto es increíble y
+              tiene muchas características geniales.
+            </p>
+            <div class="price">
+              <data
+                class="card-price"
+                th:text="${#numbers.formatInteger(shirt.price,3,'POINT')}"
+              ></data>
+            </div>
+            <div class="colors" th:object="${shirt}">
+              <h3>Colores</h3>
+              <div class="colors-container">
+                <div
+                  class="color-box"
+                  th:each="color : ${#strings.arraySplit(shirt.colors, ',')}"
+                  th:style="'background-color:' + ${color}"
+                ></div>
+              </div>
+            </div>
+
+            <div class="sizes" th:object="${shirt}">
+              <h3>Tallas disponibles</h3>
+              <div class="sizes-container">
+                <span
+                  class="size"
+                  th:each="size : ${#strings.arraySplit(shirt.sizes, ',')}"
+                  th:text="${size}"
+                ></span>
+              </div>
+            </div>
+
+            <a
+              class="buy-button"
+              th:href="@{/create/order/{combo}(combo=${shirt.combo})}" target="_blank"
+              >Comprar Ahora</a
+            >
+          </div>
+        </div>
+
+        <!-- 
+          - #PRODUCT
+        -->
+
+        <section class="section product">
+          <div class="container">
+            <h2 class="h2 section-title">Destacados 👕🔥</h2>
+
+            <ul class="product-list">
+              <li class="product-item" th:each="lista : ${list}">
+                <div class="product-card" tabindex="0">
+                  <figure class="card-banner">
+                    <img
+                      th:src="@{${lista.image1}}"
+                      width="312"
+                      height="350"
+                      loading="lazy"
+                      alt="Running Sneaker Shoes"
+                      class="image-contain"
+                    />
+
+                    <div class="card-badge" th:text="${lista.state}">New</div>
+
+                    <ul class="card-action-list">
+                      <li class="card-action-item"></li>
+                    </ul>
+                  </figure>
+
+                  <div class="card-content">
+                    <div class="card-cat">
+                      <a href="#" class="card-cat-link">Categoria</a> /
+                      <a
+                        href="#"
+                        class="card-cat-link"
+                        th:text="${lista.category}"
+                        >Women</a
+                      >
+                    </div>
+
+                    <h3 class="h3 card-title">
+                      <a
+                        th:href="@{'/shirt/' + ${lista.id}}"
+                        th:text="${lista.name}"
+                        >Running Sneaker Shoes</a
+                      >
+                    </h3>
+
+                    <data
+                      class="card-price"
+                      value="180.85"
+                      th:text="${#numbers.formatInteger(lista.price,3,'POINT')}"
+                      >$180.85</data
+                    >
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </article>
+    </main>
+
+    <!-- 
+      - #FOOTER
+    -->
+
+    <footer class="footer">
+      <div class="footer-top section">
+        <div class="container">
+          <div class="footer-brand">
+            <a href="#" class="logo-text"> Distri<span>Group</span> </a>
+
+            <ul class="social-list">
+              <li>
+                <a href="#" class="social-link">
+                  <ion-icon name="logo-facebook"></ion-icon>
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="social-link">
+                  <ion-icon name="logo-twitter"></ion-icon>
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="social-link">
+                  <ion-icon name="logo-pinterest"></ion-icon>
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="social-link">
+                  <ion-icon name="logo-linkedin"></ion-icon>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-link-box">
+            <ul class="footer-list">
+              <li>
+                <p class="footer-list-title">Contacto</p>
+              </li>
+
+              <li>
+                <address class="footer-link">
+                  <ion-icon name="location"></ion-icon>
+
+                  <span class="footer-link-text">
+                    Calle 55a 39-29 Cali, Colombia
+                  </span>
+                </address>
+              </li>
+
+              <li>
+                <a href="tel:+557343673257" class="footer-link">
+                  <ion-icon name="call"></ion-icon>
+
+                  <span class="footer-link-text">+57 315-324-6835</span>
+                </a>
+              </li>
+
+              <li>
+                <a href="mailto:footcap@help.com" class="footer-link">
+                  <ion-icon name="mail"></ion-icon>
+
+                  <span class="footer-link-text">DistriGruop@gmail.com</span>
+                </a>
+              </li>
+            </ul>
+
+            <div class="footer-list">
+              <p class="footer-list-title">Horario de atencion</p>
+
+              <table class="footer-table">
+                <tbody>
+                  <tr class="table-row">
+                    <th class="table-head" scope="row">Lunes a viernes:</th>
+
+                    <td class="table-data">8:00 AM - 5:30 PM</td>
+                  </tr>
+
+                  <tr class="table-row">
+                    <th class="table-head" scope="row">Sabados:</th>
+
+                    <td class="table-data">7:00 AM - 2:00 PM</td>
+                  </tr>
+
+                  <tr class="table-row">
+                    <th class="table-head" scope="row">Domingo:</th>
+
+                    <td class="table-data">Cerrado</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- 
+      - #GO TO TOP
+    -->
+
+    <a href="#top" class="go-top-btn" data-go-top>
+      <ion-icon name="arrow-up-outline"></ion-icon>
+    </a>
+
+    <!-- 
+      - custom js link
+    -->
+    <script src="/js/script2.js"></script>
+
+    <!-- 
+      - ionicon link
+    -->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+
+    <script>
+      function changeImage(thumbnail) {
+        // Obtiene la URL de la imagen de la miniatura
+        const newSrc = thumbnail.src;
+        // Actualiza la imagen principal con la URL de la miniatura
+        document.getElementById("currentImage").src = newSrc;
+      }
+    </script>
+  </body>
+</html>
